@@ -60,4 +60,25 @@ validateRate, async (request, response) => {
   }
 });
 
+router.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const data = await fs.readFile(talkerFile, 'utf8');
+    const talkers = JSON.parse(data);
+
+    const talkerIndex = talkers.findIndex((t) => t.id === parseInt(id, 10));
+    if (talkerIndex === -1) {
+      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    talkers.splice(talkerIndex, 1);
+    await fs.writeFile(talkerFile, JSON.stringify(talkers), 'utf8');
+
+    return res.status(204).end();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Erro ao excluir a pessoa palestrante.' });
+  }
+});
+
 module.exports = router;
