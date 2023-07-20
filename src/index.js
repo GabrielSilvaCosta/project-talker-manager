@@ -1,3 +1,4 @@
+// index.js
 const express = require('express');
 const talkerRoutes = require('./routes/talkerRoutes');
 const authRoutes = require('./routes/authRoutes');
